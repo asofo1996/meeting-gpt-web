@@ -2,10 +2,9 @@ services:
   - type: web
     name: meeting-gpt-web
     env: python
-    plan: free
+    pythonVersion: 3.10.13
     buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run streamlit_app.py --server.port=10000 --server.enableCORS=false
-    autoDeploy: true
+    startCommand: streamlit run streamlit_app.py --server.port=10000 --server.enableXsrfProtection=false
     envVars:
       - key: DEPLOY_ENV
         value: render

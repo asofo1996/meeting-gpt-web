@@ -1,7 +1,6 @@
 import streamlit as st
 import tempfile
 import os
-import wave
 import gspread
 from google.cloud import speech
 from pydub import AudioSegment
@@ -9,7 +8,7 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
 
-# ✅ 환경 자동 분기
+# ✅ 환경 분기
 ENV = os.environ.get("DEPLOY_ENV", "local")
 
 if ENV == "render":
@@ -23,8 +22,6 @@ else:
     DRIVE_CLIENT_SECRET_PATH = os.path.join(SECRET_DIR, "client_secrets.json")
 
 DRIVE_FOLDER_ID = "1UwU-YRq-3-uRMLT3tRm0D_0fpWda_nm5"
-
-# ✅ Google STT 인증
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_CREDENTIALS_PATH
 
 # ✅ Google Sheets 인증
@@ -49,7 +46,7 @@ def upload_to_drive(filepath):
     file_drive.SetContentFile(filepath)
     file_drive.Upload()
 
-# ✅ Google Speech-to-Text 변환
+# ✅ Google Speech-to-Text 변환 함수
 def transcribe(audio_path):
     client = speech.SpeechClient()
     with open(audio_path, "rb") as audio_file:
@@ -82,13 +79,12 @@ if audio_file is not None:
     with st.spinner("🧠 인식 중..."):
         transcript = transcribe(wav_path)
 
-        # ✅ 시트에 20자 단위 저장
+        # ✅ 시트에 20자 단위로 입력
         row = 2
         for i in range(0, len(transcript), 20):
             SHEET.update_cell(row, 2, transcript[i:i+20])
             row += 1
 
-        # ✅ Google Drive 업로드
         upload_to_drive(wav_path)
 
     st.success("✅ 회의 기록 저장 완료!")
