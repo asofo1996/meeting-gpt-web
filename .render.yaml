@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: meeting-gpt-web
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run streamlit_app.py --server.port=10000 --server.enableCORS=false
+    autoDeploy: true
+    envVars:
+      - key: DEPLOY_ENV
+        value: render
+    secretFiles:
+      - name: credentials.json
+        mountPath: /etc/secrets/credentials.json
+      - name: central-oath.json
+        mountPath: /etc/secrets/central-oath.json
+      - name: client_secrets.json
+        mountPath: /etc/secrets/client_secrets.json
