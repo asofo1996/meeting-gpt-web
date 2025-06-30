@@ -1,7 +1,5 @@
 streamlit
-pyaudio
 pydub
 gspread
-pydrive2
 oauth2client
 google-cloud-speech
