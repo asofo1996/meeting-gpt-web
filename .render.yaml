@@ -2,7 +2,7 @@ services:
   - type: web
     name: meeting-gpt-web
     env: python
-    pythonVersion: 3.10.13
+    pythonVersion: 3.10.13  # ✅ 반드시 이 위치에 있어야 반영됩니다
     buildCommand: pip install -r requirements.txt
     startCommand: streamlit run streamlit_app.py --server.port=10000 --server.enableXsrfProtection=false
     envVars:
